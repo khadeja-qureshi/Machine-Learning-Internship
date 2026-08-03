@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+>
+<title>
+Ranking Content Refresh Opportunities with Search Performance Signals
+</title>
+
+<style>
+:root {
+    --background: #f4f6f8;
+    --surface: #ffffff;
+    --text: #17202a;
+    --muted: #5f6b76;
+    --border: #dfe4ea;
+    --accent: #234f7d;
+    --width: 1080px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        Inter, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.65;
+}
+
+header {
+    padding: 64px 24px 48px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+header div,
+main {
+    width: min(var(--width), calc(100% - 40px));
+    margin: 0 auto;
+}
+
+h1 {
+    max-width: 900px;
+    margin: 0 0 16px;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.08;
+}
+
+.subtitle {
+    max-width: 800px;
+    color: var(--muted);
+    font-size: 1.15rem;
+}
+
+.badge {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+main {
+    padding: 28px 0 72px;
+}
+
+section {
+    margin: 26px 0;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+h3 {
+    margin-top: 30px;
+}
+
+.callout {
+    margin: 24px 0;
+    padding: 18px 20px;
+    border-left: 4px solid var(--accent);
+    background: #f1f6fb;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.metric {
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.metric strong {
+    display: block;
+    font-size: 1.65rem;
+}
+
+.metric span {
+    color: var(--muted);
+}
+
+figure {
+    margin: 32px 0;
+}
+
+figure img {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+figcaption {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.94rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.data-table th,
+.data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.data-table th {
+    background: #f1f4f7;
+}
+
+a {
+    color: var(--accent);
+}
+
+footer {
+    padding: 28px 20px 48px;
+    color: var(--muted);
+    text-align: center;
+}
+
+@media (max-width: 650px) {
+    section {
+        padding: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+<header>
+<div>
+    <div class="badge">
+        FlyRank Machine Learning Capstone
+    </div>
+
+    <h1>
+        Ranking Content Refresh Opportunities
+        with Search Performance Signals
+    </h1>
+
+    <p class="subtitle">
+        A client-grouped comparison of a transparent
+        CTR-and-visibility baseline, Logistic
+        Regression, and Random Forest.
+    </p>
+</div>
+</header>
+
+<main>
+<section id="abstract">
+<h2>Abstract</h2>
+
+<p>
+Content teams need a practical way to decide which
+existing webpages deserve refresh review first.
+This study uses page-level search-performance
+measurements from the FlyRank internship warehouse
+to test whether pre-decision signals can rank pages
+that later experience a greater-than-20% decline in
+average daily impressions. I compared a transparent
+CTR-and-visibility rule baseline with Logistic
+Regression and Random Forest using a client-grouped
+validation split and the same held-out pages for
+every method. Random Forest tied the baseline at
+Precision@20 with 0.600 and at Precision@50 with
+0.560, while producing stronger full-ranking
+metrics with Average Precision of 0.446 versus
+0.412 for the baseline. The result supports using
+the learned model as an additional human-review
+signal, not as proof that a page needs refreshing
+or that refreshing it would cause recovery.
+</p>
+</section>
+
+<section id="introduction">
+<h2>Introduction and problem statement</h2>
+
+<p>
+A content team cannot manually inspect every
+existing webpage. The practical decision is which
+pages should be inspected first when review
+capacity is limited.
+</p>
+
+<p>
+Search declines may reflect outdated content,
+changing demand, query intent, competitors, SERP
+features, technical issues, or measurement
+variation. A low-performing page should therefore
+not automatically be rewritten.
+</p>
+
+<div class="callout">
+<strong>Decision supported:</strong>
+prioritize existing pages for human refresh review,
+with reason codes and an action playbook.
+</div>
+</section>
+
+<section id="data">
+<h2>Data</h2>
+
+<p>
+The study uses build
+<strong>v20260703</strong>
+of the FlyRank internship warehouse and the
+<code>fact_content_daily_performance</code> table.
+</p>
+
+<div class="summary-grid">
+<div class="metric">
+<strong>9,841,378</strong>
+<span>March daily source rows</span>
+</div>
+
+<div class="metric">
+<strong>61,374</strong>
+<span>eligible page-level rows</span>
+</div>
+
+<div class="metric">
+<strong>21,755</strong>
+<span>validation pages</span>
+</div>
+
+<div class="metric">
+<strong>8</strong>
+<span>held-out clients</span>
+</div>
+</div>
+
+<p>
+The source grain is one report date, pseudonymized
+client, and pseudonymized content item. Daily
+records were aggregated into one row per
+client-content pair.
+</p>
+
+<p>
+March 1–15, 2026 supplies model inputs.
+March 16–31 supplies only the observed outcome.
+June 2026 remains sealed.
+</p>
+
+<p>
+URLs, domains, raw queries, GA4 fields, identifiers,
+future-window measurements, product flags, and
+label-derived inputs were excluded from the model.
+</p>
+</section>
+
+<section id="methodology">
+<h2>Methodology</h2>
+
+<h3>Observed label</h3>
+<p>
+A page receives a positive observed label when its
+later average daily impressions are more than 20%
+below its feature-window average.
+</p>
+
+<h3>Features</h3>
+<ul>
+<li>Log-transformed impressions</li>
+<li>Log-transformed clicks</li>
+<li>CTR percentage</li>
+<li>Average search position</li>
+<li>Observed feature-window days</li>
+</ul>
+
+<h3>Baseline and models</h3>
+<p>
+The baseline gives 70% weight to CTR deficit and
+30% to log-scaled impression volume. Logistic
+Regression is the readable model, while Random
+Forest is the nonlinear challenger. Probabilities
+are used as ranking scores.
+</p>
+
+<h3>Validation</h3>
+<p>
+Training and validation are grouped by client.
+No validation client appears in training.
+All methods use the same validation pages, metrics,
+and tie-breaking process.
+</p>
+
+<h3>Leakage controls</h3>
+<p>
+Baseline reference values and model preprocessing
+are fitted on training clients only. Identifiers,
+future fields, outcome fields, labels, URLs, domains,
+queries, and product flags are not model inputs.
+</p>
+</section>
+
+<section id="results">
+<h2>Results</h2>
+
+<div class="table-wrapper">
+<table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Method</th>
+      <th>Base rate</th>
+      <th>Correct @20</th>
+      <th>Precision@20</th>
+      <th>Correct @50</th>
+      <th>Precision@50</th>
+      <th>Average Precision</th>
+      <th>ROC AUC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Week-4 baseline</td>
+      <td>0.333</td>
+      <td>12</td>
+      <td>0.600</td>
+      <td>28</td>
+      <td>0.560</td>
+      <td>0.412</td>
+      <td>0.602</td>
+    </tr>
+    <tr>
+      <td>Logistic Regression</td>
+      <td>0.333</td>
+      <td>12</td>
+      <td>0.600</td>
+      <td>27</td>
+      <td>0.540</td>
+      <td>0.435</td>
+      <td>0.630</td>
+    </tr>
+    <tr>
+      <td>Random Forest</td>
+      <td>0.333</td>
+      <td>12</td>
+      <td>0.600</td>
+      <td>28</td>
+      <td>0.560</td>
+      <td>0.446</td>
+      <td>0.640</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure>
+<img
+    src="figures/precision_comparison.png"
+    alt="Precision at 20 and 50 by method"
+>
+<figcaption>
+All three methods tied at Precision@20. Random
+Forest and the baseline also tied at Precision@50.
+</figcaption>
+</figure>
+
+<figure>
+<img
+    src="figures/full_ranking_metrics.png"
+    alt="Full ranking metrics by method"
+>
+<figcaption>
+Random Forest produced stronger Average Precision
+and ROC AUC across the full validation ranking.
+</figcaption>
+</figure>
+
+<p>
+Random Forest did not improve the two limited-queue
+precision metrics over the Week-4 baseline.
+It improved Average Precision from 0.412 to 0.446
+and ROC AUC from 0.602 to 0.640.
+</p>
+
+<p>
+The result is a modest full-ranking improvement,
+not a decisive improvement at the top of the queue.
+</p>
+</section>
+
+<section id="limitations">
+<h2>Limitations and honest framing</h2>
+
+<ul>
+<li>
+The study uses one grouped development split from
+one calendar month.
+</li>
+<li>
+Clients differ in available history and measurement
+coverage.
+</li>
+<li>
+The short-window label may reflect seasonality,
+volatility, changing demand, or technical events.
+</li>
+<li>
+Page-level averages hide query-level and SERP-level
+variation.
+</li>
+<li>
+The model does not observe content age, query
+intent, competitor actions, or technical condition.
+</li>
+<li>
+A selected page is a review recommendation, not
+proof that a refresh is necessary.
+</li>
+</ul>
+
+<p>
+The study does not reveal Google's ranking
+algorithm and does not estimate the causal effect
+of refreshing content.
+</p>
+
+<h3>Concrete error cases</h3>
+<div class="table-wrapper">
+<table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Error type</th>
+      <th>Model rank</th>
+      <th>Model score</th>
+      <th>Impressions</th>
+      <th>Clicks</th>
+      <th>CTR %</th>
+      <th>Average position</th>
+      <th>Later change %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>false_positive_top_50</td>
+      <td>4</td>
+      <td>0.726</td>
+      <td>14588.0</td>
+      <td>6.0</td>
+      <td>0.041</td>
+      <td>8.206</td>
+      <td>-13.454</td>
+    </tr>
+    <tr>
+      <td>false_positive_top_50</td>
+      <td>8</td>
+      <td>0.724</td>
+      <td>8920.0</td>
+      <td>4.0</td>
+      <td>0.045</td>
+      <td>6.810</td>
+      <td>76.874</td>
+    </tr>
+    <tr>
+      <td>decline_outside_top_50</td>
+      <td>1873</td>
+      <td>0.603</td>
+      <td>342.0</td>
+      <td>0.0</td>
+      <td>0.000</td>
+      <td>5.497</td>
+      <td>-100.000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<section id="recommendations">
+<h2>Ranked recommendations</h2>
+
+<p>
+The following public-safe queue excludes client
+names, page identifiers, URLs, domains, and queries.
+</p>
+
+<div class="table-wrapper">
+<table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model score</th>
+      <th>Action</th>
+      <th>Reason code</th>
+      <th>Confidence</th>
+      <th>Visibility</th>
+      <th>Position</th>
+      <th>CTR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>0.733</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Higher model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.730</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Higher model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.727</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Higher model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.726</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Higher model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.725</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Higher model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.724</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate-high model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.724</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate-high model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.724</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate-high model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.724</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate-high model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>0.723</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>MODEL_ELEVATED_DECLINE_RISK</td>
+      <td>Moderate-high model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>0.720</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>0.720</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>0.719</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>0.718</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>MODEL_ELEVATED_DECLINE_RISK</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>0.718</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>MODEL_ELEVATED_DECLINE_RISK</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>0.717</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>0.716</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>LOW_CTR_HIGH_VISIBILITY</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>very_low</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>0.715</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>MODEL_ELEVATED_DECLINE_RISK</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>0.713</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>MODEL_ELEVATED_DECLINE_RISK</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>low</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>0.713</td>
+      <td>REVIEW_FOR_REFRESH</td>
+      <td>MODEL_ELEVATED_DECLINE_RISK</td>
+      <td>Moderate model priority</td>
+      <td>very_high</td>
+      <td>page_1</td>
+      <td>low</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Action playbook</h3>
+<ol>
+<li>Check query intent and normal CTR expectations.</li>
+<li>Check zero-click and other SERP features.</li>
+<li>Review metadata alignment.</li>
+<li>Inspect content freshness and completeness.</li>
+<li>Check whether one query dominates the averages.</li>
+<li>Check seasonality and technical events.</li>
+<li>
+Choose refresh, metadata review, technical review,
+monitoring, or no action.
+</li>
+</ol>
+</section>
+
+<section id="interpretation">
+<h2>Model interpretation</h2>
+
+<figure>
+<img
+    src="figures/permutation_importance.png"
+    alt="Random Forest permutation importance"
+>
+<figcaption>
+Permutation importance measures model reliance,
+not causal influence.
+</figcaption>
+</figure>
+
+<p>
+The top three measured features were
+<code>ctr_pct_first15</code>,
+<code>log_impressions_first15</code>, and
+<code>avg_position_first15</code>.
+</p>
+</section>
+
+<section id="reproducibility">
+<h2>Reproducibility</h2>
+
+<p>
+The final modeling run used random seed
+<strong>42</strong>.
+The metrics receipt records the software versions
+used for the result.
+</p>
+
+<ul>
+<li>
+<a href="https://github.com/khadeja-qureshi/Machine-Learning-Internship">
+Project repository
+</a>
+</li>
+<li>
+<a href="https://github.com/khadeja-qureshi/Machine-Learning-Internship/blob/main/work/notebooks/w03_data_contract.ipynb">
+Data contract notebook
+</a>
+</li>
+<li>
+<a href="https://github.com/khadeja-qureshi/Machine-Learning-Internship/blob/main/work/notebooks/w04_baseline_score.ipynb">
+Baseline notebook
+</a>
+</li>
+<li>
+<a href="https://github.com/khadeja-qureshi/Machine-Learning-Internship/blob/main/work/notebooks/w05_model.ipynb">
+Modeling notebook
+</a>
+</li>
+<li>
+<a href="https://github.com/khadeja-qureshi/Machine-Learning-Internship/blob/main/work/notebooks/capstone.ipynb">
+Capstone notebook
+</a>
+</li>
+</ul>
+</section>
+
+<section id="acknowledgments">
+<h2>Acknowledgments and data credit</h2>
+
+<p>
+Built on the
+<a href="https://flyrank.ai">
+FlyRank ML Internship dataset
+</a>.
+</p>
+
+<p>
+Completed as part of the FlyRank Machine Learning
+internship track.
+</p>
+</section>
+</main>
+
+<footer>
+Refresh / Content Opportunity Scoring capstone
+</footer>
+</body>
+</html>
