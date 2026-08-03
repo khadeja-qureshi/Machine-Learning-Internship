@@ -1,0 +1,32 @@
+[
+  {
+    "error_group":"false_positive_top_50",
+    "rank":4,
+    "model_score":0.726,
+    "impressions":14588.0,
+    "clicks":6.0,
+    "ctr_pct":0.041,
+    "avg_position":8.206,
+    "later_change_pct":-13.454
+  },
+  {
+    "error_group":"false_positive_top_50",
+    "rank":8,
+    "model_score":0.724,
+    "impressions":8920.0,
+    "clicks":4.0,
+    "ctr_pct":0.045,
+    "avg_position":6.81,
+    "later_change_pct":76.874
+  },
+  {
+    "error_group":"decline_outside_top_50",
+    "rank":1873,
+    "model_score":0.603,
+    "impressions":342.0,
+    "clicks":0.0,
+    "ctr_pct":0.0,
+    "avg_position":5.497,
+    "later_change_pct":-100.0
+  }
+]

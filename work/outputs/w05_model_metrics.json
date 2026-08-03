@@ -1,0 +1,105 @@
+{
+  "lane": "refresh_content_opportunity_scoring",
+  "warehouse_release": "v20260703",
+  "warehouse_table": "fact_content_daily_performance",
+  "warehouse_partition": "2026-03",
+  "warehouse_rows": 9841378,
+  "warehouse_clients": 55,
+  "warehouse_content_items": 331437,
+  "modeling_rows": 61374,
+  "modeling_clients": 36,
+  "feature_window": "2026-03-01 to 2026-03-15",
+  "outcome_window": "2026-03-16 to 2026-03-31",
+  "sealed_month_not_used": "2026-06",
+  "split_design": "80/20 grouped holdout by client_hash_id",
+  "random_state": 42,
+  "training_rows": 39619,
+  "validation_rows": 21755,
+  "training_clients": 28,
+  "validation_clients": 8,
+  "training_base_rate": 0.3017239203412504,
+  "validation_base_rate": 0.3327510917030568,
+  "features": [
+    "log_impressions_first15",
+    "log_clicks_first15",
+    "ctr_pct_first15",
+    "avg_position_first15",
+    "active_days_first15"
+  ],
+  "selected_model_for_interpretation": "Random Forest",
+  "comparison_results": [
+    {
+      "method": "Random Forest",
+      "validation_rows": 21755,
+      "base_rate": 0.3327510917,
+      "correct_at_20": 12,
+      "precision_at_20": 0.6,
+      "lift_at_20": 1.8031496063,
+      "correct_at_50": 28,
+      "precision_at_50": 0.56,
+      "lift_at_50": 1.6829396325,
+      "average_precision": 0.4455630181,
+      "roc_auc": 0.6398823068
+    },
+    {
+      "method": "Week-4 baseline",
+      "validation_rows": 21755,
+      "base_rate": 0.3327510917,
+      "correct_at_20": 12,
+      "precision_at_20": 0.6,
+      "lift_at_20": 1.8031496063,
+      "correct_at_50": 28,
+      "precision_at_50": 0.56,
+      "lift_at_50": 1.6829396325,
+      "average_precision": 0.4117249252,
+      "roc_auc": 0.6016634221
+    },
+    {
+      "method": "Logistic Regression",
+      "validation_rows": 21755,
+      "base_rate": 0.3327510917,
+      "correct_at_20": 12,
+      "precision_at_20": 0.6,
+      "lift_at_20": 1.8031496063,
+      "correct_at_50": 27,
+      "precision_at_50": 0.54,
+      "lift_at_50": 1.6228346457,
+      "average_precision": 0.4349169405,
+      "roc_auc": 0.629889237
+    }
+  ],
+  "permutation_importance": [
+    {
+      "feature": "ctr_pct_first15",
+      "importance_mean": 0.0567998417,
+      "importance_std": 0.0019410326
+    },
+    {
+      "feature": "log_impressions_first15",
+      "importance_mean": 0.0235619644,
+      "importance_std": 0.0014182879
+    },
+    {
+      "feature": "avg_position_first15",
+      "importance_mean": 0.018588827,
+      "importance_std": 0.0020964846
+    },
+    {
+      "feature": "log_clicks_first15",
+      "importance_mean": 0.0111746287,
+      "importance_std": 0.0017338462
+    },
+    {
+      "feature": "active_days_first15",
+      "importance_mean": 0.0095951103,
+      "importance_std": 0.0007582114
+    }
+  ],
+  "versions": {
+    "python": "3.12.13",
+    "pandas": "2.2.2",
+    "numpy": "2.0.2",
+    "duckdb": "1.3.2",
+    "scikit_learn": "1.6.1"
+  }
+}

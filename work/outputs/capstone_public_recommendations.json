@@ -1,0 +1,202 @@
+[
+  {
+    "rank":1,
+    "model_score":0.733,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Higher model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":2,
+    "model_score":0.73,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Higher model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":3,
+    "model_score":0.727,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Higher model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":4,
+    "model_score":0.726,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Higher model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":5,
+    "model_score":0.725,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Higher model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":6,
+    "model_score":0.724,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate-high model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":7,
+    "model_score":0.724,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate-high model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":8,
+    "model_score":0.724,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate-high model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":9,
+    "model_score":0.724,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate-high model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":10,
+    "model_score":0.723,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"MODEL_ELEVATED_DECLINE_RISK",
+    "confidence_note":"Moderate-high model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"low"
+  },
+  {
+    "rank":11,
+    "model_score":0.72,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":12,
+    "model_score":0.72,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":13,
+    "model_score":0.719,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":14,
+    "model_score":0.718,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"MODEL_ELEVATED_DECLINE_RISK",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"low"
+  },
+  {
+    "rank":15,
+    "model_score":0.718,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"MODEL_ELEVATED_DECLINE_RISK",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"low"
+  },
+  {
+    "rank":16,
+    "model_score":0.717,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":17,
+    "model_score":0.716,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"LOW_CTR_HIGH_VISIBILITY",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"very_low"
+  },
+  {
+    "rank":18,
+    "model_score":0.715,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"MODEL_ELEVATED_DECLINE_RISK",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"low"
+  },
+  {
+    "rank":19,
+    "model_score":0.713,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"MODEL_ELEVATED_DECLINE_RISK",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"low"
+  },
+  {
+    "rank":20,
+    "model_score":0.713,
+    "action_label":"REVIEW_FOR_REFRESH",
+    "reason_code":"MODEL_ELEVATED_DECLINE_RISK",
+    "confidence_note":"Moderate model priority",
+    "visibility_band":"very_high",
+    "position_band":"page_1",
+    "ctr_band":"low"
+  }
+]
